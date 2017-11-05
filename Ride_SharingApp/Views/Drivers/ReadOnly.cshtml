@@ -1,0 +1,73 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList<Ride_SharingApp.Controllers.Driver>
+
+@{
+    ViewBag.Title = "Drivers List";
+}
+@Html.Partial("UserNav")
+<h2>Drivers List</h2>
+
+<p>
+
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DriverName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DriverCNIC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DriverEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DriverPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DriverAverageRating)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverCNIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverAverageRating)
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+@using (Html.BeginForm("ReadOnly", "Drivers", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" class="btn btn-default" />
+    </p>
+}
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("ReadOnly",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
